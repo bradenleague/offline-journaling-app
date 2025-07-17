@@ -38,7 +38,7 @@ if %errorlevel% neq 0 (
 
 REM Start the production server
 echo Starting the server...
-start /b npm run serve
+start npm run serve
 
 REM Wait for the server to start
 timeout /t 2 /nobreak >nul
@@ -56,7 +56,7 @@ echo To stop the server, close this window or press Ctrl+C
 echo.
 
 REM Keep the window open
-echo. & echo Script finished. Review the log file for details: %LOGFILE%
+echo. & echo Script finished.
 pause
 )
 >> "%LOGFILE%" 2>&1
