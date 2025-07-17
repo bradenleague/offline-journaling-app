@@ -1,5 +1,9 @@
+
 @echo off
 setlocal enabledelayedexpansion
+set LOGFILE=%~dp0app-log.txt
+REM Start logging
+(
 
 REM Change to the script's directory
 cd /d "%~dp0"
@@ -52,4 +56,7 @@ echo To stop the server, close this window or press Ctrl+C
 echo.
 
 REM Keep the window open
-pause 
+echo. & echo Script finished. Review the log file for details: %LOGFILE%
+pause
+)
+>> "%LOGFILE%" 2>&1
