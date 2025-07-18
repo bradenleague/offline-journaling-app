@@ -1,17 +1,17 @@
 import { config } from '../config';
 
-interface LMStudioMessage {
-  role: 'system' | 'user' | 'assistant';
-  content: string;
-}
+// interface LMStudioMessage {
+//   role: 'system' | 'user' | 'assistant';
+//   content: string;
+// }
 
-interface LMStudioRequest {
-  model: string;
-  messages: LMStudioMessage[];
-  temperature?: number;
-  max_tokens?: number;
-  stream?: boolean;
-}
+// interface LMStudioRequest {
+//   model: string;
+//   messages: LMStudioMessage[];
+//   temperature?: number;
+//   max_tokens?: number;
+//   stream?: boolean;
+// }
 
 interface LMStudioResponse {
   choices: Array<{
