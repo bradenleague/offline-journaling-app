@@ -13,6 +13,21 @@ A beautiful, offline-first journaling application built with React, TypeScript, 
 
 ## Getting Started
 
+### Windows Users
+
+If you are on Windows, you can use the provided `start-app.bat` script to build and run the app:
+
+```bat
+start-app.bat
+```
+
+This script will:
+- Check if npm is installed and up to date
+- Install dependencies if needed
+- Build the project for production
+- Start the server
+- Open your browser automatically
+
 ### Prerequisites
 
 - Node.js (version 18 or higher)
@@ -41,8 +56,6 @@ This script will:
 - Build the project for production
 - Start the server
 - Open your browser automatically
-
-The app will be available at `http://localhost:4173`
 
 #### Option 2: Development Mode
 1. Start the development server:
