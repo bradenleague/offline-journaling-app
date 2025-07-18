@@ -23,12 +23,17 @@ export const config = {
    - Load your preferred model
    - Start the local server
 
-2. **Configure the App**
+2. **Enable CORS in LM Studio**
+   - In LM Studio, navigate to the Server Settings
+   - Find and enable the CORS option
+   - This step is crucial - without CORS enabled, the app cannot communicate with LM Studio
+
+3. **Configure the App**
    - Copy `config.example.ts` to `config.local.ts`
    - Edit `config.local.ts` to set your LM Studio server address, model, and timeout as needed
    - `config.local.ts` is gitignored and will not be committed
 
-3. **Verify Connection**
+4. **Verify Connection**
    - The app shows a connection status in the header
    - Green badge = connected, red badge = disconnected
    - Click the badge to manually check connection
