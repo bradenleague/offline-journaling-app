@@ -27,6 +27,31 @@ if not exist "node_modules" (
     )
 )
 
+REM Create config.local.ts if it doesn't exist
+if not exist "config.local.ts" (
+    echo Creating configuration file...
+    set /p LMSTUDIO_URL="Enter LM Studio base URL [default: http://localhost:1234]: "
+    if "!LMSTUDIO_URL!"=="" set LMSTUDIO_URL=http://localhost:1234
+    (
+        echo interface AppConfig {
+        echo   lmStudio: {
+        echo     baseUrl: string;
+        echo     model?: string;
+        echo     timeout?: number;
+        echo   };
+        echo }
+        echo.
+        echo export const config: AppConfig = {
+        echo   lmStudio: {
+        echo     baseUrl: '!LMSTUDIO_URL!',
+        echo     model: '', // Leave empty to use the loaded model, or specify exact model name
+        echo     timeout: 30000, // 30 seconds timeout
+        echo   },
+        echo };
+    ) > config.local.ts
+    echo Configuration file created.
+)
+
 REM Build the app
 echo Building the app...
 npm run build
