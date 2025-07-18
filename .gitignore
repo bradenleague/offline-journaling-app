@@ -91,3 +91,6 @@ jspm_packages/
 # Temporary folders
 tmp/
 temp/ 
+
+# Local config for LM Studio integration
+config.local.ts 

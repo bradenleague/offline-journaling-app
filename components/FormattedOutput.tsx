@@ -5,10 +5,32 @@ import { Copy, Download, Edit3, Save, Eye, Code } from 'lucide-react';
 import { toast } from 'sonner';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { ExpandableThoughts } from './ExpandableThoughts';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface FormattedOutputProps {
   content: string;
   onEdit: (content: string) => void;
+}
+
+// Helper to split content into markdown and <think> blocks
+function parseContentWithThoughts(content: string) {
+  const parts: Array<{ type: 'markdown' | 'think'; value: string }> = [];
+  const regex = /<think>([\s\S]*?)<\/think>/gi;
+  let lastIndex = 0;
+  let match;
+  while ((match = regex.exec(content)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push({ type: 'markdown', value: content.slice(lastIndex, match.index) });
+    }
+    parts.push({ type: 'think', value: match[1].trim() });
+    lastIndex = regex.lastIndex;
+  }
+  if (lastIndex < content.length) {
+    parts.push({ type: 'markdown', value: content.slice(lastIndex) });
+  }
+  return parts;
 }
 
 export function FormattedOutput({ content, onEdit }: FormattedOutputProps) {
@@ -19,7 +41,7 @@ export function FormattedOutput({ content, onEdit }: FormattedOutputProps) {
   const handleEdit = () => {
     setEditContent(content);
     setIsEditing(true);
-    setShowRawMarkdown(false);
+    setShowRawMarkdown(true); // Show raw markdown textarea by default when editing
   };
 
   const handleSave = () => {
@@ -37,7 +59,12 @@ export function FormattedOutput({ content, onEdit }: FormattedOutputProps) {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(content);
+      // Only copy the markdown parts, not the <think> reasoning
+      const markdownOnly = parseContentWithThoughts(content)
+        .filter(part => part.type === 'markdown')
+        .map(part => part.value)
+        .join('').trim();
+      await navigator.clipboard.writeText(markdownOnly);
       toast.success('Copied to clipboard');
     } catch (err) {
       toast.error('Failed to copy');
@@ -150,6 +177,25 @@ export function FormattedOutput({ content, onEdit }: FormattedOutputProps) {
               <div className="prose prose-sm max-w-none dark:prose-invert markdown-content">
                 <ReactMarkdown 
                   remarkPlugins={[remarkGfm]}
+                  components={{
+                    code({ node, inline, className, children, ...props }: { node?: any, inline?: boolean, className?: string, children?: React.ReactNode }) {
+                      const match = /language-(\w+)/.exec(className || '');
+                      return !inline && match ? (
+                        <SyntaxHighlighter
+                          style={oneDark}
+                          language={match[1]}
+                          PreTag="div"
+                          {...props}
+                        >
+                          {String(children).replace(/\n$/, '')}
+                        </SyntaxHighlighter>
+                      ) : (
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      );
+                    }
+                  }}
                 >
                   {editContent}
                 </ReactMarkdown>
@@ -159,11 +205,74 @@ export function FormattedOutput({ content, onEdit }: FormattedOutputProps) {
         ) : (
           <div className="h-full overflow-auto">
             <div className="prose prose-sm max-w-none dark:prose-invert markdown-content">
-              <ReactMarkdown 
-                remarkPlugins={[remarkGfm]}
-              >
-                {content}
-              </ReactMarkdown>
+              {parseContentWithThoughts(content).map((part, idx) =>
+                part.type === 'think' ? (
+                  <ExpandableThoughts key={idx}>
+                    <ReactMarkdown 
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        code({ node, inline, className, children, ...props }: { node?: any, inline?: boolean, className?: string, children?: React.ReactNode }) {
+                          const match = /language-(\w+)/.exec(className || '');
+                          return !inline && match ? (
+                            <SyntaxHighlighter
+                              style={oneDark}
+                              language={match[1]}
+                              PreTag="div"
+                              {...props}
+                            >
+                              {String(children).replace(/\n$/, '')}
+                            </SyntaxHighlighter>
+                          ) : (
+                            <code className={className} {...props}>
+                              {children}
+                            </code>
+                          );
+                        }
+                      }}
+                    >
+                      {part.value}
+                    </ReactMarkdown>
+                  </ExpandableThoughts>
+                ) : (
+                  <ReactMarkdown 
+                    key={idx}
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      code({ node, inline, className, children, ...props }: { node?: any, inline?: boolean, className?: string, children?: React.ReactNode }) {
+                        const match = /language-(\w+)/.exec(className || '');
+                        if (!inline && match) {
+                          return (
+                            <SyntaxHighlighter
+                              style={oneDark}
+                              language={match[1]}
+                              PreTag="div"
+                              {...props}
+                            >
+                              {String(children).replace(/\n$/, '')}
+                            </SyntaxHighlighter>
+                          );
+                        } else if (!inline) {
+                          // Code block without language
+                          return (
+                            <pre className={className} {...props}>
+                              <code>{children}</code>
+                            </pre>
+                          );
+                        } else {
+                          // Inline code
+                          return (
+                            <code className={className} {...props}>
+                              {children}
+                            </code>
+                          );
+                        }
+                      }
+                    }}
+                  >
+                    {part.value}
+                  </ReactMarkdown>
+                )
+              )}
             </div>
           </div>
         )}
