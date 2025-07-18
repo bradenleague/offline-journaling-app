@@ -59,7 +59,7 @@ You can use markdown formatting:
 - [links](url)
 
 Write about what you saw, felt, or experienced today..."
-          className="flex-1 resize-none border-0 shadow-none focus-visible:ring-0 p-0"
+          className="flex-1 resize-none border-0 shadow-none focus-visible:ring-0 p-0 placeholder:text-gray-400 placeholder:focus:text-gray-300"
           style={{ minHeight: '400px' }}
         />
 
@@ -68,7 +68,8 @@ Write about what you saw, felt, or experienced today..."
           <Button
             onClick={onFormat}
             disabled={!value.trim() || isFormatting}
-            className="flex-1"
+            className="flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 font-semibold"
+            size="lg"
           >
             {isFormatting ? (
               <>
@@ -87,6 +88,8 @@ Write about what you saw, felt, or experienced today..."
             variant="outline"
             onClick={handleClear}
             disabled={!value.trim()}
+            className="hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 transition-all duration-200"
+            size="lg"
           >
             Clear
           </Button>
