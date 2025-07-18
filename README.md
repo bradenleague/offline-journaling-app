@@ -2,133 +2,127 @@
 
 A beautiful, offline-first journaling application built with React, TypeScript, and Tailwind CSS. Write your thoughts freely and format them into structured field journal entries using AI.
 
-## Features
+## 🌟 Key Features
 
 - **Offline-First**: Works completely offline, no internet required
 - **Auto-Save**: Your journal entries are automatically saved to local storage
 - **AI Formatting**: Transform raw journal entries into structured field journal format
 - **Dark/Light Theme**: Supports both light and dark themes
-- **Export**: Copy to clipboard or download your formatted entries as Markdown
+- **Export Options**: Copy to clipboard or download your formatted entries as Markdown
 - **Editable Output**: Edit the AI-formatted output to your liking
 
-## Getting Started
+## 🚀 Quick Start Guide
 
-### Windows Users
+1. **Prerequisites**
+   - Node.js (version 18 or higher)
+   - npm or yarn
+   - LM Studio (for AI formatting feature)
 
-If you are on Windows, you can use the provided `start-app.bat` script to build and run the app:
+2. **LM Studio Setup**
+   - Follow the setup guide in `LM_STUDIO_SETUP.md` to:
+     - Install and configure LM Studio
+     - Set up CORS settings
+     - Configure the app connection
 
-```bat
-start-app.bat
-```
-
-This script will:
-- Check if npm is installed and up to date
-- Install dependencies if needed
-- Build the project for production
-- Start the server
-- Open your browser automatically
-
-### Prerequisites
-
-- Node.js (version 18 or higher)
-- npm or yarn
-
-### Installation
-
-1. Clone or download this repository
-2. Navigate to the project directory
-3. Install dependencies:
+3. **Installation**
    ```bash
+   # Clone repository
+   git clone https://github.com/bradenleague/offline-journaling-app.git
+   
+   # Navigate to project directory
+   cd offline-journaling-app
+   
+   # Install dependencies
    npm install
    ```
+
+3. **Launch the App**
+
+   **Windows Users:**
+   ```bat
+   start-app.bat
+   ```
+
+   **Other Platforms:**
+   ```bash
+   ./start-app.sh
+   ```
+
+   This will:
+   - Install dependencies if needed
+   - Build the project
+   - Start the server
+   - Open your browser automatically
+
+## 💻 Development
 
 ### Running the Application
 
 #### Option 1: Quick Start (Recommended)
-Use the provided script to automatically build and serve the production version:
+Use the provided script:
 
 ```bash
-./start-app.sh
+./start-app.sh  # Linux/Mac
+# or
+start-app.bat   # Windows
 ```
 
-This script will:
-- Install dependencies if needed
-- Build the project for production
-- Start the server
-- Open your browser automatically
-
 #### Option 2: Development Mode
-1. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-2. Open your browser and navigate to `http://localhost:3000`
+```bash
+npm run dev
+```
+Then open `http://localhost:3000` in your browser.
 
 ### Building for Production
-
 ```bash
 npm run build
 ```
+Built files will be in the `dist` directory.
 
-The built files will be in the `dist` directory.
+## 📝 User Guide
 
-## How to Use
-
-1. **Write Your Journal**: Start typing in the left panel. Your text is automatically saved to local storage.
-
-2. **Format with AI**: Click the "Format with AI" button to transform your raw journal entry into a structured format with sections for:
+1. **Writing**: Type your thoughts in the left panel (auto-saves to local storage)
+2. **Formatting**: Click "Format with AI" to structure your entry with:
    - Location
    - Weather
    - Observations
    - Reflections
+3. **Editing**: Modify the formatted output as needed
+4. **Exporting**: Copy to clipboard or download as Markdown
+5. **Starting Over**: Click "Clear" for a fresh entry
 
-3. **Edit and Export**: You can edit the formatted output directly, copy it to clipboard, or download it as a Markdown file.
+## 🛠️ Technical Details
 
-4. **Clear**: Use the "Clear" button to start fresh.
+### Technology Stack
+- **Frontend**: React 18, TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS, shadcn/ui
+- **UI Components**: Lucide React (icons), Sonner (toasts)
+- **AI Integration**: LM Studio (local LLM server)
 
-## Technology Stack
+### AI Configuration
+- See `LM_STUDIO_SETUP.md` for detailed setup instructions
+- Uses OpenAI-compatible API endpoints
+- Configurable through `config.local.ts`
+- Real-time connection status indicator
 
-- **React 18** - Modern React with hooks
-- **TypeScript** - Type-safe JavaScript
-- **Vite** - Fast build tool and development server
-- **Tailwind CSS** - Utility-first CSS framework
-- **shadcn/ui** - Beautiful, accessible UI components
-- **Lucide React** - Beautiful icons
-- **Sonner** - Toast notifications
-
-## Project Structure
-
+### Project Structure
 ```
 ├── components/
-│   ├── ui/              # Reusable UI components (shadcn/ui)
-│   ├── JournalInput.tsx # Left panel - raw journal input
-│   └── FormattedOutput.tsx # Right panel - formatted output
-├── styles/
-│   └── globals.css      # Global styles and CSS variables
-├── App.tsx             # Main application component
-├── main.tsx           # Application entry point
-└── index.html         # HTML template
+│   ├── ui/              # UI components (shadcn/ui)
+│   ├── JournalInput     # Journal input panel
+│   └── FormattedOutput  # Formatted output panel
+├── styles/              # Global styles
+└── [App files]         # Main app components
 ```
 
-## Customization
+### Customization Options
 
-### Themes
-The app supports both light and dark themes. The theme variables are defined in `styles/globals.css` and can be customized to match your preferences.
+#### Theming
+- Light/dark theme support
+- Theme variables in `styles/globals.css`
+- Fully customizable to match your brand
 
-### AI Formatting
-The AI formatting logic is currently a mock implementation in `App.tsx`. You can replace the `formatJournalEntry` function with actual AI integration (like OpenAI API, local LLM, etc.).
+## 📄 License
 
-## Contributing
-
-This project was generated from a Figma design and is ready for further development. Feel free to:
-
-- Add real AI integration
-- Implement additional export formats
-- Add more journal templates
-- Enhance the UI/UX
-- Add data persistence beyond localStorage
-
-## License
-
-This project includes components from [shadcn/ui](https://ui.shadcn.com/) used under [MIT license](https://github.com/shadcn-ui/ui/blob/main/LICENSE.md). 
+Uses [shadcn/ui](https://ui.shadcn.com/) under [MIT license](https://github.com/shadcn-ui/ui/blob/main/LICENSE.md) 
