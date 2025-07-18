@@ -15,6 +15,35 @@ if [ ! -d "node_modules" ]; then
     npm install
 fi
 
+# Create config.local.ts if it doesn't exist
+if [ ! -f "config.local.ts" ]; then
+    echo "Creating configuration file..."
+    read -p "Enter LM Studio base URL [default: http://localhost:1234]: " LMSTUDIO_URL
+    LMSTUDIO_URL=${LMSTUDIO_URL:-http://localhost:1234}
+    
+    cat > config.local.ts << EOF
+// Personal LM Studio config. This file is gitignored and should NOT be committed.
+// Copy of config.example.ts - edit your settings below.
+
+interface AppConfig {
+  lmStudio: {
+    baseUrl: string;
+    model?: string;
+    timeout?: number;
+  };
+}
+
+export const config: AppConfig = {
+  lmStudio: {
+    baseUrl: '$LMSTUDIO_URL',
+    model: '', // Optionally specify model name
+    timeout: 30000, // 30 seconds timeout
+  },
+};
+EOF
+    echo "Configuration file created."
+fi
+
 # Build the app
 echo "Building the app..."
 npm run build
